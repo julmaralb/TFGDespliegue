@@ -1,0 +1,19 @@
+.example-fill-remaining-space {
+	flex: 1 1 auto;
+}
+
+.badge {
+	background-color: #fa3e3e;
+	border-radius: 2px;
+	color: white;
+	padding: 1px 3px;
+	font-size: 12px;
+	position: absolute;
+	top: 3;
+	right: 5;
+}
+
+.username {
+	font-size: 14px;
+	font-family: Roboto;
+}

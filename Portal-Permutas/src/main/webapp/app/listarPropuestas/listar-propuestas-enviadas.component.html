@@ -1,0 +1,30 @@
+<md-sidenav-container>
+<md-card>
+	<md-card-title>
+		Propuestas Enviadas
+	</md-card-title>
+	
+	<table class="table">
+  	<thead class="thead-default">
+        	<tr>
+            	<th>Titulo</th>
+                <th>Destinatario</th>
+                <th>Fecha</th>
+                <th>Estado</th>
+                <th>Fecha Acept/Rechaz</th>
+            </tr>
+        </thead>
+        <tbody>
+			<tr *ngFor="let propuesta of propuestas">
+            	<td>{{propuesta.titulo}}</td>
+                <td>{{propuesta.nombreDestinatario}}</td>
+                <td>{{propuesta.fecha | date: 'dd/MM/yyyy'}}</td>
+                <td *ngIf="propuesta.estado == 0">Pendiente</td>
+                <td *ngIf="propuesta.estado == 1">Aceptada</td>
+                <td *ngIf="propuesta.estado == 2">Rechazada</td>
+                <td *ngIf="propuesta.fechaAcepRech">{{propuesta.fechaAcepRech | date: 'dd/MM/yyyy'}}</td>          
+        	</tr>
+		</tbody>
+	</table>
+</md-card>
+</md-sidenav-container>

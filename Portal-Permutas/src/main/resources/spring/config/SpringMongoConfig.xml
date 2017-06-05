@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+    http://www.springframework.org/schema/data/mongo
+    http://www.springframework.org/schema/data/mongo/spring-mongo-1.0.xsd">
+
+	<mongo:mongo id="mongo" host="ds048319.mlab.com"
+		port="48319" />
+	
+	<mongo:db-factory dbname="portal-permutas" mongo-ref="mongo" username="julioma" password="nova88"/>
+
+	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+		<constructor-arg name="mongoDbFactory" ref="mongoDbFactory" />
+	</bean>
+	
+	<mongo:repositories base-package="repositories" mongo-template-ref="mongoTemplate"/>
+	<mongo:repositories base-package="security" mongo-template-ref="mongoTemplate"/>
+	
+		<!-- <mongo:db-factory id="mongoDbFactory" host="ds048319.mlab.com" port="48319" 
+			dbname="portal-permutas" username="julioma" password="nova88"/> <bean id="mongoTemplate" 
+			class="org.springframework.data.mongodb.core.MongoTemplate"> <constructor-arg 
+			name="mongoDbFactory" ref="mongoDbFactory" /> </bean> <mongo:repositories 
+			base-package="repositories" mongo-template-ref="mongoTemplate"/> <!- JPA 
+			<constructor-arg value="Portal-Permutas" /> </bean> -->
+</beans>

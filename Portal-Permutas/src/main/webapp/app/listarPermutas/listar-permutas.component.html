@@ -1,0 +1,41 @@
+<md-sidenav-container>
+<md-card>
+	<md-card-title>
+		Historial de permutas
+	</md-card-title>
+	
+	<table class="table">
+  	<thead class="thead-default">
+        	<tr>
+            	<th>Fecha</th>
+            	<th>IdPlazaPropia</th>
+            	<th></th>
+                <th>IdPlazaRecibida</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+			<tr *ngFor="let p of permutas">
+            	<td>{{p.fecha | date: 'dd/MM/yyyy'}}</td>
+                <td>{{p.plazaPropiaId}}</td>
+                <td><button md-raised-button (click)='getPlazaById(p.plazaPropiaId)' color="primary">Detalles</button></td>
+                <td>{{p.plazaRecibidaId}}</td>
+                <td><button md-raised-button (click)='getPlazaById(p.plazaRecibidaId)' color="primary">Detalles</button></td>                   
+        	</tr>
+		</tbody>
+	</table>
+</md-card>
+
+<ng-container *ngIf="plaza">
+	<md-card>
+		<md-card-title>Detalles de la plaza</md-card-title>
+		<span>Titulo: {{plaza.titulo}}</span><br>
+		<span>Centro: {{plaza.centro}}</span><br>
+		<span>Direccion: {{plaza.direccion}}</span>
+		<br>
+		<br>
+		<span><button md-raised-button (click)='cerrar()' color="primary">Cerrar</button></span>
+	</md-card>
+</ng-container>
+
+</md-sidenav-container>

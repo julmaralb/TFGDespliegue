@@ -1,0 +1,10 @@
+@import '~@angular/material/core/theming/prebuilt/deeppurple-amber.css';
+
+.container {
+    z-index: 2;
+    position: absolute;
+}
+
+.container ul li {
+    float: left;
+}

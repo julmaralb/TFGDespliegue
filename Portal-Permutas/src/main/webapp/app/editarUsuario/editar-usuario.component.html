@@ -1,0 +1,55 @@
+<md-sidenav-container>
+<div class="col-md-6 col-md-offset-3" *ngIf="principal">
+<md-card>
+	<md-card-title>
+		Editar Perfil
+	</md-card-title>
+	
+	<div *ngIf="cambios" class="alert alert-success">Cambios guardados correctamente.</div>
+	
+    <form name="form" (ngSubmit)="f.form.valid && editar()" #f="ngForm" novalidate>
+        <div class="form-group">
+            <label for="nombre">Nombre</label>
+            <input type="text" class="form-control" name="nombre" [(ngModel)]="principal.nombre" #nombre="ngModel" required />
+            <div *ngIf="f.submitted && !nombre.valid" class="help-block">Es necesario introducir el nombre</div>
+        </div>
+        <div class="form-group">
+            <label for="apellidos">Apellidos</label>
+            <input type="text" class="form-control" name="apellidos" [(ngModel)]="principal.apellidos" #apellidos="ngModel" required />
+            <div *ngIf="f.submitted && !apellidos.valid" class="help-block">Es necesario introducir los apellidos</div>
+        </div>
+		<div class="form-group">
+            <label for="email">Email</label>
+            <input type="text" class="form-control" name="email" [(ngModel)]="principal.email" 
+            required pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$" #email="ngModel" required />
+            <div *ngIf="email.errors && (f.submitted || email.dirty || email.touched)"
+            	class="alert alert-danger">
+            	<div [hidden]="!email.errors.required">
+              		Es necesario introducir el email
+            	</div>
+            	<div [hidden]="!email.errors.pattern">
+              		Email incorrecto
+            	</div>
+        	</div>
+        </div>
+        <div class="form-group">
+            <label for="email">Telefono</label>
+            <input type="text" class="form-control" name="telefono" [(ngModel)]="principal.telefono" #telefono="ngModel" required />
+            <div *ngIf="f.submitted && !telefono.valid" class="help-block">Debe introducir un telefono</div>
+        </div>
+        <div class="form-group">
+        	<button md-raised-button [disabled]="loading || !f.form.valid" color="primary">Modificar</button>
+            <ng-container *ngIf="loading">
+            <md-progress-circle
+        		class="example-margin"
+        		[color]="color"
+        		[mode]="mode"
+        		[value]="value">
+    		</md-progress-circle>
+    		</ng-container>
+    		<a md-button routerLink="/">Cancelar</a>
+        </div>
+    </form>
+</md-card>
+</div>
+</md-sidenav-container>

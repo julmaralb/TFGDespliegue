@@ -1,0 +1,102 @@
+<md-sidenav-container>
+
+<md-card>
+
+	<span>Tus zonas:</span>&nbsp;
+	<ng-container *ngFor="let z of zonas let i = index">
+ 		<button md-raised-button (click)='goToZone(z.latitud,z.longitud)' color="primary">Zona {{i+1}}</button>
+ 	</ng-container><br><br>
+
+	<md-toolbar>
+	 
+	<input type="text" id="your-search-bar" class="form-control" placeholder="Buscar direccion" 
+	[(ngModel)]="address" (keydown)="keyDownFunction($event)">
+	<button md-icon-button (click)='search()' color="primary">
+    	<md-icon class="md-24">search</md-icon>
+    </button>
+    
+    <span class="example-fill-remaining-space"></span>
+    
+    <button md-icon-button (click)="addCircle()" color="warn" style="margin-right: 10px;">
+        <md-icon class="md-48">add_circle</md-icon>
+    </button>
+    
+    <button md-icon-button [disabled]="circles.length == 0" (click)="save()" color="primary" style="margin-right: 10px;">
+        <md-icon class="md-48">save</md-icon>
+    </button>
+    
+    </md-toolbar>
+	
+    <sebm-google-map 
+      [latitude]="lat"
+      [longitude]="lng"
+      [zoom]="zoom"
+      [disableDefaultUI]="false"
+      [zoomControl]="false"
+      (centerChange)="changedCenter($event)">
+    
+      <sebm-google-map-marker 
+          *ngFor="let p of plazas; let i = index"
+          (markerClick)="clickedMarker(p.titulo, i)"
+          [latitude]="p.latitud"
+          [longitude]="p.longitud"
+          [title]="p.titulo">
+          
+        <sebm-google-map-info-window>
+          <span>Titulo: {{p.titulo}}</span><br>
+          <span>Centro: {{p.centro}}</span><br>
+          <span>Direccion: {{p.direccion}}</span><br><br>
+          <button md-raised-button (click)='proponer(p.usuarioId)' color="accent">Enviar Propuesta</button>
+        </sebm-google-map-info-window>
+        
+      </sebm-google-map-marker>
+      
+      <sebm-google-map-circle 
+      	  *ngFor="let z of zonas"
+      	  [latitude]="z.latitud" 
+      	  [longitude]="z.longitud" 
+          [radius]="z.radio"
+          [fillColor]="'red'"
+          [circleDraggable]="false"
+          [editable]="false"
+          (rightClick)="deleteZone(z.id)">
+      </sebm-google-map-circle>
+      
+      <sebm-google-map-circle 
+      	  *ngFor="let c of circles"
+      	  [latitude]="c.latitude" 
+      	  [longitude]="c.longitude" 
+          [radius]="c.radius"
+          [fillColor]="'blue'"
+          [circleDraggable]="c.circleDraggable"
+          [editable]="c.editable"
+          (radiusChange)="changedRadius($event, c)"
+          (centerChange)="changedCircleCenter($event, c)"
+          (dragEnd)="changedPosition($event, c)">
+      </sebm-google-map-circle>
+
+    </sebm-google-map>
+</md-card>
+
+<md-card>
+	<md-card-title>
+		Coincidencias
+	</md-card-title>
+	
+	<table class="table">
+  	<thead class="thead-default">
+			<tr>
+				<th>Titulo</th>
+                <th>Nombre</th>
+            </tr>
+        </thead>
+        <tbody>
+			 <tr *ngFor="let c of coincidencias">
+             	<td>{{c.titulo}}</td>
+                <td>{{c.nombreUsuarioDestino}}</td>
+                <td><button md-raised-button (click)='proponer(c.idUsuarioDestino)' color="primary">Proponer</button></td>              
+             </tr>
+        </tbody>
+	</table>
+</md-card>
+</md-sidenav-container>

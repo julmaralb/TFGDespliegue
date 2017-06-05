@@ -1,0 +1,82 @@
+<md-sidenav-container>
+
+	<md-card>
+		<md-card-title>Propuestas Recibidas</md-card-title>
+		
+	<table class="table">
+  	<thead class="thead-default">
+        	<tr>
+            	<th>Titulo</th>
+                <th>Remitente</th>
+                <th>Fecha</th>
+                <th>Estado</th>
+                <th>Fecha Acept/Rechaz</th>
+                <th>Aceptar/Rechazar</th>
+                <th>Ir</th>
+                <th>Detalles</th>
+            </tr>
+        </thead>
+        <tbody>
+			<tr *ngFor="let propuesta of propuestas">
+            	<td>{{propuesta.titulo}}</td>
+                <td>{{propuesta.nombreRemitente}}</td>
+                <td>{{propuesta.fecha | date: 'dd/MM/yyyy'}}</td>
+                <td *ngIf="propuesta.estado == 0">Pendiente</td>
+                <td *ngIf="propuesta.estado == 1">Aceptada</td>
+                <td *ngIf="propuesta.estado == 2">Rechazada</td>
+                <td *ngIf="propuesta.fechaAcepRech">{{propuesta.fechaAcepRech | date: 'dd/MM/yyyy'}}</td>
+                <td *ngIf="!propuesta.fechaAcepRech"></td>
+                <td *ngIf="propuesta.estado == 0">
+                	<button md-raised-button (click)='aceptar(propuesta.id)' color="primary">Aceptar</button>
+                	<button md-raised-button (click)='rechazar(propuesta.id)' color="warn">Rechazar</button>
+                </td>
+                <td *ngIf="!propuesta.estado == 0"></td>
+                <td><button md-raised-button (click)='goToZone(propuesta.latitudRemitente, propuesta.longitudRemitente)' color="primary">Ir</button></td>
+                <td><button md-raised-button (click)='getPlazaRemitente(propuesta.idPlazaRemitente, propuesta.texto)' color="primary">Detalles</button></td>     
+        	</tr>
+		</tbody>
+	</table>
+	<ng-container *ngIf="loading">
+            <md-progress-circle
+        		class="example-margin"
+        		[color]="color"
+        		[mode]="mode"
+        		[value]="value">
+    		</md-progress-circle>
+    </ng-container>
+</md-card>
+
+<ng-container *ngIf="plazaRemitente">
+<md-card>
+	<md-card-title>
+		Detalles de la plaza
+	</md-card-title>
+	<span>Titulo: {{plazaRemitente.titulo}}</span><br>
+	<span>Centro: {{plazaRemitente.centro}}</span><br>
+	<span>Direccion: {{plazaRemitente.direccion}}</span><br>
+	<span>Texto: {{textoPropuesta}}</span>
+	<br>
+	<br>
+	<span><button md-raised-button (click)='cerrar()' color="primary">Cerrar</button></span>
+</md-card>
+</ng-container>
+
+<ng-container *ngIf="!plazaRemitente">
+	<sebm-google-map 
+      [latitude]="lat"
+      [longitude]="lng"
+      [zoom]="zoom"
+      [disableDefaultUI]="false"
+      (centerChange)="changedCenter($event)"
+      [zoomControl]="false">
+    
+      <sebm-google-map-marker 
+          *ngFor="let p of propuestas; let i = index"
+          [latitude]="p.latitudRemitente"
+          [longitude]="p.longitudRemitente"
+          [title]="p.nombreRemitente" >         
+      </sebm-google-map-marker> 
+    </sebm-google-map>
+</ng-container>
+
+</md-sidenav-container>

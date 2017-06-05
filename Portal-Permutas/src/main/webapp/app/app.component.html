@@ -1,0 +1,75 @@
+<md-sidenav-container class="demo-root" fullscreen [class.dark-theme]="isDarkTheme">
+  <md-sidenav #start>
+    <md-nav-list>
+      <ng-container *ngIf="!this.authenticationService.isLoggedIn()">
+      <a *ngFor="let navItem of NotLoggedNavItems"
+         md-list-item
+         (click)="start.close()"
+         [routerLink]="[navItem.route]">
+        {{navItem.name}}
+      </a>
+	  </ng-container>
+	  
+	  <ng-container *ngIf="this.authenticationService.isLoggedIn()">
+      <a *ngFor="let navItem of LoggedNavItems"
+         md-list-item
+         (click)="start.close()"
+         [routerLink]="[navItem.route]">
+        {{navItem.name}}
+      </a>
+	  </ng-container>
+      <hr>
+      
+      <a md-list-item
+         (click)="start.close() && toggleTheme()">
+        Toggle theme
+      </a>
+      
+    </md-nav-list>
+    <button md-button (click)="start.close()">CLOSE</button>    
+  </md-sidenav>
+  <div>
+    <md-toolbar color="primary">
+      <button md-icon-button (click)="start.open()">
+        <md-icon class="md-24" >menu</md-icon>
+      </button>
+      
+      <span>
+      	<button md-icon-button (click)='goToHome()'>
+      		<md-icon class="md-24">home</md-icon>
+      	</button>
+      </span>
+      <span>Portal-Permutas</span> 
+   	  <span class="example-fill-remaining-space"></span>
+   	  
+      <ng-container *ngIf="this.authenticationService.isLoggedIn()">   
+      	<button md-icon-button (click)='goToEditarUsuario()'>
+      		<md-icon class="md-48">account_circle</md-icon>
+      	</button>
+      	<span class="username">{{this.authenticationService.getCurrentUser().username}}</span>
+      	&nbsp;
+      	<ng-container *ngIf="this.authenticationService.getNumPR() > 0">
+      	<button md-icon-button (click)='goToRecibidas()'>
+      		<md-icon class="md-24">notifications</md-icon><span class="badge">{{this.authenticationService.getNumPR()}}</span>
+      	</button> 
+      	</ng-container>
+      	<ng-container *ngIf="this.authenticationService.getNumPR() == 0">
+      		<button md-icon-button (click)='goToRecibidas()'>
+      			<md-icon class="md-24">notifications_none</md-icon>
+      		</button>
+      	</ng-container>	
+      	<button md-button (click)='logout()'>Cerrar sesion</button>   
+      </ng-container>
+      
+      <span *ngIf="!this.authenticationService.isLoggedIn()">
+      	<button md-button (click)='goToLogin()'>Iniciar sesion</button>
+      	<button md-button (click)='goToRegister()'>Registro</button>
+      </span>
+
+    </md-toolbar>
+
+    <div #root="$implicit" dir="ltr" class="demo-content">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</md-sidenav-container>

@@ -1,0 +1,16 @@
+.example-fill-remaining-space {
+	flex: 1 1 auto;
+}
+
+.sebm-google-map-container {
+	height: 600px;
+}
+
+.material-icons.md-48 {
+	font-size: 48px;
+	margin-right: 10px;
+}
+
+input {
+	width:300px;
+}

@@ -1,0 +1,44 @@
+<md-sidenav-container>
+<md-card>
+
+	<md-toolbar>
+	
+	<input type="text" id="your-search-bar" class="form-control" placeholder="Buscar direccion" 
+	[(ngModel)]="address" (keydown)="keyDownFunction($event)">
+	<button md-icon-button (click)='search()' color="primary">
+      	<md-icon class="md-24">search</md-icon>
+    </button>
+    
+    </md-toolbar>
+     	
+    <sebm-google-map 
+      [latitude]="lat"
+      [longitude]="lng"
+      [zoom]="zoom"
+      [disableDefaultUI]="false"
+      [zoomControl]="false"
+      (centerChange)="changedCenter($event)"
+      (mapClick)="mapClicked($event)">
+    
+      <sebm-google-map-marker 
+          *ngFor="let p of plazas; let i = index"
+          (markerClick)="clickedMarker(p.titulo, i)"
+          [latitude]="p.latitud"
+          [longitude]="p.longitud"
+          [title]="p.titulo"      
+          (dragEnd)="markerDragEnd(m, $event)">
+          
+        <sebm-google-map-info-window>
+          <span>Titulo: {{p.titulo}}</span><br>
+          <span>Centro: {{p.centro}}</span><br>
+          <span>Direccion: {{p.direccion}}</span><br><br>
+          <ng-container *ngIf="this.authenticationService.isLoggedIn()">
+          <button md-raised-button (click)='proponer(p.usuarioId)' color="accent">Enviar Propuesta</button>
+          </ng-container>
+        </sebm-google-map-info-window>
+        
+      </sebm-google-map-marker>
+ 
+    </sebm-google-map>
+</md-card>
+</md-sidenav-container>
